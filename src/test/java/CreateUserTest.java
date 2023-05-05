@@ -1,15 +1,16 @@
 import io.qameta.allure.Step;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.example.LoginDataInResponse;
-import org.example.UserDataToCreate;
+import org.example.responsesBody.LoginDataInResponse;
+import org.example.requestsBody.UserDataToCreate;
 import org.junit.Before;
 import org.junit.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
-public class CreateUserTestDataToCreate {
+public class CreateUserTest {
 
     @Before
     public void setUp() {
@@ -26,19 +27,17 @@ public class CreateUserTestDataToCreate {
         return response;
     }
     @Step("Send DELETE request to /api/auth/user")
-    public Response deleteUser(String token) {
-        Response response =
+    public void deleteUser(String token) {
                 given()
-                        .header("Content-type", "application/json")
-                        .auth().oauth2("token")
+                        .auth().oauth2(token.replaceFirst("Bearer ",""))
                         .when()
-                        .delete("api/auth/register");
-        return response;
+                        .delete("api/auth/user");
     }
 
     @Test
+    @DisplayName("Успешное создание пользователя")
     public void createUserSuccessTest(){
-        UserDataToCreate userDataToCreate = new UserDataToCreate("letmeinahahah@yandex.ru", "123", "Nya");
+        UserDataToCreate userDataToCreate = new UserDataToCreate("letmeinahahahahahah@yandex.ru", "123", "Nya");
         Response response = createUser(userDataToCreate);
         response.then().statusCode(200)
                 .and()
@@ -47,9 +46,9 @@ public class CreateUserTestDataToCreate {
         deleteUser(userData.getAccessToken());
     }
     @Test
+    @DisplayName("Ошибка создания пользователя: пользователь уже существует")
     public void createUserErrorUserExistTest() {
-        UserDataToCreate userDataToCreate = new UserDataToCreate("letmeinahahah@yandex.ru", "123", "Nya");
-        createUser(userDataToCreate);
+        UserDataToCreate userDataToCreate = new UserDataToCreate("blablaahaha@yandex.ru", "123", "Nya");
         Response response = createUser(userDataToCreate);
         createUser(userDataToCreate)
                 .then().statusCode(403)
