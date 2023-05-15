@@ -1,14 +1,12 @@
-import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.RestAssured;
-import io.restassured.response.Response;
-import org.example.requestsBody.UserDataToCreate;
+import site.nomoreparties.stellarburgers.Client;
+import site.nomoreparties.stellarburgers.requests.UserDataToCreate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 @RunWith(Parameterized.class)
 public class CreateUser403TestDataToCreate {
@@ -20,6 +18,7 @@ public class CreateUser403TestDataToCreate {
             this.password = password;
             this.name = name;
         }
+        Client client = new Client();
         @Parameterized.Parameters
         public static Object[][] getTestData() {
             return new Object[][] {
@@ -28,27 +27,16 @@ public class CreateUser403TestDataToCreate {
                     { null, "54321", "Nya"},
             };
         }
-
         @Before
         public void setUp() {
             RestAssured.baseURI = "https://stellarburgers.nomoreparties.site/";
-        }
-        @Step("Send POST request to api/auth/register")
-        public Response createUser(UserDataToCreate userDataToCreate) {
-            Response response =
-                    given()
-                            .header("Content-type", "application/json")
-                            .body(userDataToCreate)
-                            .when()
-                            .post("api/auth/register");
-            return response;
         }
 
         @Test
         @DisplayName("Ошибка создания пользователя: не хватает данных")
         public void createUserErrorUserDataNullTest() {
             UserDataToCreate userDataToCreate = new UserDataToCreate(email, password, name);
-            createUser(userDataToCreate)
+            client.createUser(userDataToCreate)
                     .then().statusCode(403)
                     .and()
                     .assertThat().body("message", equalTo("Email, password and name are required fields"));
