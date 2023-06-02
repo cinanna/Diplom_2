@@ -1,0 +1,6 @@
+AuthorizationTest.class
+GetClientOrdersTest.class
+UpdateTest.class
+CreateOrderTest.class
+CreateUser403TestDataToCreate.class
+CreateUserTest.class

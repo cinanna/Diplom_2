@@ -1,0 +1,12 @@
+site\nomoreparties\stellarburgers\Order.class
+site\nomoreparties\stellarburgers\requests\OrderData.class
+site\nomoreparties\stellarburgers\requests\UserDataToLogin.class
+site\nomoreparties\stellarburgers\responses\UserDataInResponse.class
+org\example\Main.class
+site\nomoreparties\stellarburgers\Client.class
+site\nomoreparties\stellarburgers\requests\UserDataToUpdate.class
+site\nomoreparties\stellarburgers\responses\UpdateDataInResponse.class
+site\nomoreparties\stellarburgers\responses\LoginDataInResponse.class
+site\nomoreparties\stellarburgers\responses\IngredientsResponse.class
+site\nomoreparties\stellarburgers\requests\UserDataToCreate.class
+site\nomoreparties\stellarburgers\responses\Data.class
